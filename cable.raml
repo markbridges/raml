@@ -1,0 +1,268 @@
+#%RAML 0.8
+title: Cable API
+baseUri: http://mover-platform.cablelabs.cloudbees.net
+version: v0
+securitySchemes:
+  - hmac_authentication :
+        description: |
+            Cable mover includes HMAC authentication for all REST requests.
+        type: Digest Authentication
+        describedBy:
+            headers:
+                hmac:
+                    description: |
+                       Used to send the hmac header. Structure of HMAC header, "<username>:<hmac-value>".
+                       HMAC value is calculated using "HmacSHA256" algorithm.
+                          API KEY provided will be used as the secret for the calculating the hmac value.
+                          The content which will be used to calculate the digest are 
+                            "<HTTP-METHOD>\n<MD5-of-payload>\n<Content-type>\n<Current-Date-Time>\n<URI-Path>"
+                        Ex: POST
+                            zcTBIgInGw/RZfQp9U1hsw==
+                            application/json
+                            Mon, 2 Dec 2013 16:28:03 EST
+                            /customerMovers 
+                    type: string
+                Date:
+                    description: |
+                       The current date time expressed as a string in the following format. "EEE, d MMM yyyy HH:mm:ss z"
+                Content-Md5:
+                    description: |
+                       MD5 of the actual payload. 
+            responses:
+                403:
+                    description: |
+                        Bad HMAC request (wrong API key for the user or incorrect hmac signature for the username using the API key. 
+schemas:
+- !include https://github.com/skulasekar/raml/blob/master/cable.raml
+- customer-move : |
+      					      {"type":"object","$schema": "http://json-schema.org/draft-03/schema","id": "http://jsonschema.net","required":false,"properties":{
+                					"customerMoveDate": { "type":"string", "id": "http://jsonschema.net/customerMoveDate", "required":false }, "customerMoveId": { "type":"string", "id": "http://jsonschema.net/customerMoveId", "required":false }, "customerMoveStatus": { "type":"string", "id": "http://jsonschema.net/customerMoveStatus", "required":false }, "preferredContactEmail": { "type":"object", "id": "http://jsonschema.net/preferredContactEmail", "required":false, "properties":{ "emailAddress": { "type":"string", "id": "http://jsonschema.net/preferredContactEmail/emailAddress", "required":false }, "emailClassification": { "type":"string", "id": "http://jsonschema.net/preferredContactEmail/emailClassification", "required":false } } }, "preferredContactPhone": { "type":"object", "id": "http://jsonschema.net/preferredContactPhone", "required":false, "properties":{ "telephoneNumberCategory": { "type":"string", "id": "http://jsonschema.net/preferredContactPhone/telephoneNumberCategory", "required":false }, "telephoneNumber": { "type":"string", "id": "http://jsonschema.net/preferredContactPhone/telephoneNumber", "required":false } } }, "customerSummary": { "type":"object", "id": "http://jsonschema.net/customerSummary", "required":false, "properties":{ "customerId": { "type":"string", "id": "http://jsonschema.net/customerSummary/customerId", "required":false }, "customerStatus": { "type":"string", "id": "http://jsonschema.net/customerSummary/customerStatus", "required":false }, "formattedCustomerName": { "type":"string", "id": "http://jsonschema.net/customerSummary/formattedCustomerName", "required":false } } }, "customerFromAddress": { "type":"object", "id": "http://jsonschema.net/customerFromAddress", "required":false, "properties":{ "addressClassification": { "type":"string", "id": "http://jsonschema.net/customerFromAddress/addressClassification", "required":false }, "country": { "type":"string", "id": "http://jsonschema.net/customerFromAddress/country", "required":false }, "formattedAddressLine1": { "type":"string", "id": "http://jsonschema.net/customerFromAddress/formattedAddressLine1", "required":false }, "formattedAddressLine2": { "type":"null", "id": "http://jsonschema.net/customerFromAddress/formattedAddressLine2", "required":false }, "locality": { "type":"string", "id": "http://jsonschema.net/customerFromAddress/locality", "required":false }, "postcodeExtension": { "type":"null", "id": "http://jsonschema.net/customerFromAddress/postcodeExtension", "required":false }, "postcode": { "type":"string", "id": "http://jsonschema.net/customerFromAddress/postcode", "required":false }, "state": { "type":"string", "id": "http://jsonschema.net/customerFromAddress/state", "required":false } } },  "customerToAddress": { "type":"object", "id": "http://jsonschema.net/customerToAddress", "required":false, "properties":{ "addressClassification": { "type":"string", "id": "http://jsonschema.net/customerToAddress/addressClassification", "required":false }, "country": { "type":"string", "id": "http://jsonschema.net/customerToAddress/country", "required":false }, "formattedAddressLine1": { "type":"string", "id": "http://jsonschema.net/customerToAddress/formattedAddressLine1", "required":false }, "formattedAddressLine2": { "type":"null", "id": "http://jsonschema.net/customerToAddress/formattedAddressLine2", "required":false }, "locality": { "type":"string", "id": "http://jsonschema.net/customerToAddress/locality", "required":false }, "postcodeExtension": { "type":"null", "id": "http://jsonschema.net/customerToAddress/postcodeExtension", "required":false }, "postcode": { "type":"string", "id": "http://jsonschema.net/customerToAddress/postcode", "required":false }, "state": { "type":"string", "id": "http://jsonschema.net/customerToAddress/state", "required":false } } },
+                					 "currentProductsSummary": { "type":"object", "id": "http://jsonschema.net/currentProductsSummary", "required":false, "properties":{ "prodLOBCollTypeId": { "type":"string", "id": "http://jsonschema.net/currentProductsSummary/prodLOBCollTypeId", "required":false }, "productLOBSummary": { "type":"array", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary", "required":false, "items": { "type":"object", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0", "required":false, "properties":{ "productLineOfBusiness": { "type":"string", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productLineOfBusiness", "required":false }, "productsExtendedProperties": { "type":"object", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties", "required":false, "properties":{ "extPropTypeId": { "type":"string", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extPropTypeId", "required":false }, "extendedProperty": { "type":"array", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty", "required":false, "items": { "type":"object", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0", "required":false, "properties":{ "derivationFormula": { "type":"null", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/derivationFormula", "required":false }, "description": { "type":"null", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/description", "required":false }, "extPropTypeId": { "type":"string", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/extPropTypeId", "required":false }, "extendedPropertyValue": { "type":"object", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/extendedPropertyValue", "required":false, "properties":{ "value": { "type":"string", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/extendedPropertyValue/value", "required":false } } }, "maxCardinality": { "type":"null", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/maxCardinality", "required":false }, "minCardinality": { "type":"null", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/minCardinality", "required":false }, "name": { "type":"string", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/name", "required":false }, "unique": { "type":"null", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/unique", "required":false }, "valueType": { "type":"null", "id": "http://jsonschema.net/currentProductsSummary/productLOBSummary/0/productsExtendedProperties/extendedProperty/0/valueType", "required":false } } } } } } } } } } } }}
+
+resourceTypes:
+  - base:
+      get?:
+        responses: &standardResponses
+          200: 
+            description: OK
+      put?:
+        responses: *standardResponses
+      post?:
+        responses: *standardResponses
+      delete?:
+        responses: *standardResponses
+  - post:
+      type: base
+      usage: This resourceType should be used for any collection of items
+      description: The collection of <<resourcePathName>>
+      post:
+        securedBy: [ hmac_authentication ]
+        description: Create a new <<resourcePathName | !singularize>>
+        body:
+          application/json:
+            example: |
+                   {
+                     "customerMoveDate": "2013-08-26",
+                      "customerSummary": {
+                          "customerId": "cust-2", 
+                          "customerStatus": "active", 
+                          "formattedCustomerName": "Customer One"
+                       }, 
+                     "preferredContactPhone": {
+                     "telephoneNumber": "678-898-7233", 
+                     "telephoneNumberCategory": "home"
+                      }, 
+                     "preferredContactEmail": {
+                        "emailAddress": "s.kulasekar@cablelabs.com", 
+                        "emailClassification": "personal"
+                      }, 
+                     "currentProductsSummary": {
+                        "productLOBSummary": [
+                            {
+                              "productLineOfBusiness": "Video", 
+                              "productsExtendedProperties": {
+                                  "extendedProperty": [
+                                      {
+                                          "name": "Package", 
+                                          "description": null, 
+                                          "unique": null, 
+                                          "valueType": null, 
+                                          "minCardinality": null, 
+                                          "maxCardinality": null, 
+                                          "derivationFormula": null, 
+                                          "extendedPropertyValue": {
+                                              "value": "Premium"
+                                            }
+                                      }
+                                    ]
+                               }
+                          }, 
+                          {
+                              "productLineOfBusiness": "Internet", 
+                              "productsExtendedProperties": {
+                                  "extendedProperty": [
+                                      {
+                                          "name": "Speed", 
+                                          "description": null, 
+                                          "unique": null, 
+                                          "valueType": null, 
+                                          "minCardinality": null, 
+                                          "maxCardinality": null, 
+                                          "derivationFormula": null, 
+                                          "extendedPropertyValue": {
+                                              "value": "30Mb"
+                                           }
+                                      }
+                                  ]
+                              }
+                          }
+                      ]
+                    }, 
+                    "customerFromAddress": {
+                        "formattedAddressLine1": "6306 Peachtree Dunwoody Rd", 
+                        "formattedAddressLine2": null, 
+                        "locality": "Atlanta", 
+                        "state": "GA", 
+                        "postcode": "30342", 
+                        "country": "USA", 
+                        "postcodeExtension": null, 
+                        "addressClassification": "Office"
+                      }, 
+                    "customerToAddress": {
+                      "formattedAddressLine1": "316 E Morehead St", 
+                      "formattedAddressLine2": null, 
+                      "locality": "Charlotte", 
+                      "state": "NC", 
+                      "postcode": "28202", 
+                      "country": "USA", 
+                      "postcodeExtension": null, 
+                      "addressClassification": "Home"
+                      }}
+            schema: <<schema>>
+        responses:
+          201:
+            description: Returns 201 if the instance was successfuly created and returns the URI for the resource.
+  - get:
+      type: base
+      usage: This resourceType should be used for any item of a collection
+      get:
+        securedBy: [ hmac_authentication ]
+        description: Get a <<resourcePathName | !singularize>>, optionally filtered
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                     "customerMoveId": "1",
+                     "customerMoveDate": "2013-08-26",
+                     "customerMoveStatus": "Customer Notified", 
+                      "customerSummary": {
+                          "customerId": "cust-2", 
+                          "customerStatus": "active", 
+                          "formattedCustomerName": "Customer One"
+                       }, 
+                     "preferredContactPhone": {
+                     "telephoneNumber": "678-898-7233", 
+                     "telephoneNumberCategory": "home"
+                      }, 
+                     "preferredContactEmail": {
+                        "emailAddress": "s.kulasekar@cablelabs.com", 
+                        "emailClassification": "personal"
+                      }, 
+                     "currentProductsSummary": {
+                        "prodLOBCollTypeId": "1", 
+                        "productLOBSummary": [
+                            {
+                              "productLineOfBusiness": "Video", 
+                              "productsExtendedProperties": {
+                                  "extPropTypeId": "2", 
+                                  "extendedProperty": [
+                                      {
+                                          "extPropTypeId": "2", 
+                                          "name": "Package", 
+                                          "description": null, 
+                                          "unique": null, 
+                                          "valueType": null, 
+                                          "minCardinality": null, 
+                                          "maxCardinality": null, 
+                                          "derivationFormula": null, 
+                                          "extendedPropertyValue": {
+                                              "value": "Premium"
+                                            }
+                                      }
+                                    ]
+                               }
+                          }, 
+                          {
+                              "productLineOfBusiness": "Internet", 
+                              "productsExtendedProperties": {
+                                  "extPropTypeId": "1", 
+                                  "extendedProperty": [
+                                      {
+                                          "extPropTypeId": "1", 
+                                          "name": "Speed", 
+                                          "description": null, 
+                                          "unique": null, 
+                                          "valueType": null, 
+                                          "minCardinality": null, 
+                                          "maxCardinality": null, 
+                                          "derivationFormula": null, 
+                                          "extendedPropertyValue": {
+                                              "value": "30Mb"
+                                           }
+                                      }
+                                  ]
+                              }
+                          }
+                      ]
+                  }, 
+                    "customerFromAddress": {
+                        "formattedAddressLine1": "6306 Peachtree Dunwoody Rd", 
+                        "formattedAddressLine2": null, 
+                        "locality": "Atlanta", 
+                        "state": "GA", 
+                        "postcode": "30342", 
+                        "country": "USA", 
+                        "postcodeExtension": null, 
+                        "addressClassification": "Office"
+                      }, 
+                    "customerToAddress": {
+                      "formattedAddressLine1": "316 E Morehead St", 
+                      "formattedAddressLine2": null, 
+                      "locality": "Charlotte", 
+                      "state": "NC", 
+                      "postcode": "28202", 
+                      "country": "USA", 
+                      "postcodeExtension": null, 
+                      "addressClassification": "Home"
+                  }, 
+                  "msos": [ ]
+                  }
+                schema: <<schema>>
+  - collection:
+      type: base
+      usage: This resourceType should be used for any collection of items
+      description: The collection of <<resourcePathName>>
+      get:
+        securedBy: [ hmac_authentication ]
+        description: Get all <<resourcePathName>>, optionally filtered
+        responses:
+          200:
+            body:
+              application/json:
+                schema: <<schema>>
+      
+/customerMoves:
+    type: { post: { schema : customer-move } }
+/public/customerMoves:
+    type: { post: { schema : customer-move } }
+/customerMoves/{id}:
+    type: { get: { schema : customer-move } }
+/public/customerMoves/{id}:
+    type: { get: { schema : customer-move } } 
+/customerMoves/from/all:
+    type: { collection: { schema : customer-move } }
+/customerMoves/to/all:
+    type: { collection: { schema : customer-move } }
+  
